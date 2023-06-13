@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('task', function (Blueprint $table) {
             $table->foreignId('parent_id')
+                ->nullable()
                 ->constrained('task')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
