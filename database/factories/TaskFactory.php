@@ -33,12 +33,15 @@ class TaskFactory extends Factory
 
         $rand = rand(1, 30);
         if (
-            $rand > 15 &&
+            $rand > 5 &&
             Task::all()->count() > 0
         ) {
-            $task = Task::inRandomOrder()->first();
+            $task = Task::where('parent_id', '!=', null)->inRandomOrder()->first() ?? Task::inRandomOrder()->first();
+
             $data['parent_id'] = $task->id;
+            $data['user_id'] = $task->user_id;
         }
+
 
         return $data;
     }
