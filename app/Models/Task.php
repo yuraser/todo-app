@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
@@ -43,14 +44,22 @@ class Task extends Model
      */
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(Task::class);
+        return $this->belongsTo(Task::class, 'parent_id');
     }
 
     /**
-     * @return HasOne
+     * @return HasMany
      */
-    public function status(): HasOne
+    public function children(): HasMany
     {
-        return $this->hasOne(Status::class);
+        return $this->hasMany(Task::class, 'parent_id');
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
     }
 }

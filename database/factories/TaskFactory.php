@@ -20,8 +20,8 @@ class TaskFactory extends Factory
      */
     public function definition(): array
     {
-        $user = User::inRandomOrder()->first();
         $status = Status::inRandomOrder()->first();
+        $user = User::inRandomOrder()->first();
 
         $data = [
             'name' => fake()->name(),
@@ -41,7 +41,6 @@ class TaskFactory extends Factory
             $data['parent_id'] = $task->id;
             $data['user_id'] = $task->user_id;
         }
-
 
         return $data;
     }
