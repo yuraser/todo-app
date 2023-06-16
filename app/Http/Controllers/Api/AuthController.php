@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\LoginRequest;
 use App\Http\Requests\Api\User\RegisterRequest;
 use App\Models\User;
-use App\Repositories\User\UserRepositoryInterface;
+use App\Repositories\User\AbstractUserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,10 +16,10 @@ use Illuminate\Validation\Validator;
 class AuthController extends Controller
 {
 
-    private UserRepositoryInterface $userRepository;
+    private AbstractUserRepository $userRepository;
 
     public function __construct(
-        UserRepositoryInterface $userRepository
+        AbstractUserRepository $userRepository
     )
     {
         $this->userRepository = $userRepository;

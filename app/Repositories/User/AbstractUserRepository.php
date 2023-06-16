@@ -2,7 +2,7 @@
 
 namespace App\Repositories\User;
 
-abstract class UserRepositoryInterface
+abstract class AbstractUserRepository
 {
     public abstract function create(array $data);
 }
