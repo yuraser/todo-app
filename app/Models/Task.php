@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @method static inRandomOrder()
+ * @method static findOrFail(int $id)
  */
 class Task extends Model
 {
@@ -28,7 +29,10 @@ class Task extends Model
     protected $fillable = [
         'name',
         'description',
-        'priority'
+        'priority',
+        'user_id',
+        'status_id',
+        'parent_id'
     ];
 
     /**

@@ -2,20 +2,20 @@
 
 namespace App\Providers;
 
-use App\Repositories\User\UserRepository;
-use App\Repositories\User\AbstractUserRepository;
+use App\Repositories\Task\AbstractTaskRepository;
+use App\Repositories\Task\TaskRepository;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
-class UserRepositoryProvider extends ServiceProvider
+class TaskRepositoryProvider extends ServiceProvider
 {
     /**
      * Register services.
      */
     public function register(): void
     {
-        $this->app->bind(AbstractUserRepository::class, function(Application $app){
-            return new UserRepository();
+        $this->app->bind(AbstractTaskRepository::class, function(Application $app){
+            return new TaskRepository();
         });
     }
 
@@ -24,6 +24,6 @@ class UserRepositoryProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+        //
     }
 }

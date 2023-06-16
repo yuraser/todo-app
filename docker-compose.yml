@@ -13,6 +13,7 @@ services:
 
     mysql:
         image: mysql
+        container_name: task-app-db
         environment:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: tasks_app
@@ -21,5 +22,5 @@ services:
         ports:
             - '3309:3306'
 volumes:
-    db:
-        driver: local
+    mysql:
+        driver: "local"

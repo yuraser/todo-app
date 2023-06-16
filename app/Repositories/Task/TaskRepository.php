@@ -3,9 +3,11 @@
 namespace App\Repositories\Task;
 
 use App\Models\Task;
+use App\Services\Task\AbstractTaskService;
+use Exception;
 use Illuminate\Support\Collection;
 
-class TaskRepository implements TaskRepositoryInterface
+class TaskRepository extends AbstractTaskRepository
 {
     /**
      * @param array $data
@@ -13,16 +15,31 @@ class TaskRepository implements TaskRepositoryInterface
      */
     public function create(array $data)
     {
-        // TODO: Implement create() method.
+        // It would be great to use DTO
+        return Task::create([
+            'name' => (string) $data['name'],
+            'priority' => (int) $data['priority'],
+            'description' => (string) $data['description'],
+            'user_id' => (int) $data['user_id'],
+            'status_id' => (int) $data['status_id'],
+            'parent_id' => (int) $data['parent_id'],
+        ]);
     }
 
     /**
      * @param int $id
      * @return void
+     * @throws Exception
      */
     public function delete(int $id)
     {
-        // TODO: Implement delete() method.
+        $task = Task::findOrFail($id);
+
+        if ($task->status->id == 2) {
+            throw new Exception('User can not delete complited tasks.');
+        }
+
+        Task::destroy($id);
     }
 
     /**
@@ -36,11 +53,12 @@ class TaskRepository implements TaskRepositoryInterface
 
     /**
      * @param int $id
+     * @param int $userId
      * @return Task
      */
     public function getById(int $id): Task
     {
-        // TODO: Implement getById() method.
+        return Task::findOrFail($id);
     }
 
     /**
@@ -50,7 +68,9 @@ class TaskRepository implements TaskRepositoryInterface
      */
     public function setStatus(int $id, int $statusId)
     {
-        // TODO: Implement setStatus() method.
+        Task::where('id', $id)->update([
+            'status_id' => $statusId
+        ]);
     }
 
     /**
@@ -60,6 +80,7 @@ class TaskRepository implements TaskRepositoryInterface
      */
     public function update(int $id, array $data)
     {
-        // TODO: Implement update() method.
+        $task = Task::findOrFail($id);
+        $task->update($data);
     }
 }
