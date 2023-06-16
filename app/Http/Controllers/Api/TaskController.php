@@ -16,7 +16,6 @@ class TaskController extends Controller
      */
     public AbstractTaskRepository $taskRepository;
 
-
     /**
      * @param AbstractTaskRepository $taskRepository
      */

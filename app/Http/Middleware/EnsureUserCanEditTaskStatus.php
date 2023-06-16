@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureUserCanEditTask
+class EnsureUserCanEditTaskStatus
 {
     /**
      * @var AbstractTaskService
@@ -32,7 +32,7 @@ class EnsureUserCanEditTask
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($this->taskService->userHasAccessToTask(Auth::user()->id, $request->get('id'))) {
+        if ($this->taskService->taskHasUncomplitedChild($request->get('id'))) {
             return $next($request);
         }
     }

@@ -3,7 +3,6 @@
 namespace App\Repositories\Task;
 
 use App\Models\Task;
-use App\Services\Task\AbstractTaskService;
 use Exception;
 use Illuminate\Support\Collection;
 
@@ -53,7 +52,6 @@ class TaskRepository extends AbstractTaskRepository
 
     /**
      * @param int $id
-     * @param int $userId
      * @return Task
      */
     public function getById(int $id): Task

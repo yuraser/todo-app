@@ -29,4 +29,23 @@ final class TaskService extends AbstractTaskService
             ]));
         }
     }
+
+    public function taskHasUncomplitedChild(int $taskId): bool
+    {
+        $task = Task::findOrFail($taskId);
+        foreach ($task->children as $child) {
+            if ($child->status_id == 1) {
+                throw new HttpResponseException(response()->json([
+                    'success'   => false,
+                    'message'   => 'Validation errors',
+                    'data'      => 'User can not update this task because one of child tasks with id: ' . $child->id . ' has status todo.'
+                ]));
+            }
+            if ($child->children) {
+                $this->taskHasUncomplitedChild($child->id);
+            }
+        }
+
+        return true;
+    }
 }
