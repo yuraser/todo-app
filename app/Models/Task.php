@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Builder;
+use App\Services\Filter\QueryFilter;
 
 /**
  * @method static inRandomOrder()
  * @method static findOrFail(int $id)
+ * @method static filter(array $filters)
  */
 class Task extends Model
 {
@@ -32,7 +34,8 @@ class Task extends Model
         'priority',
         'user_id',
         'status_id',
-        'parent_id'
+        'parent_id',
+        'completed_at'
     ];
 
     /**
@@ -65,5 +68,14 @@ class Task extends Model
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
+    }
+
+    /**
+     * @param Builder $builder
+     * @param QueryFilter $filter
+     */
+    public function scopeFilter(Builder $builder, QueryFilter $filter)
+    {
+        $filter->apply($builder);
     }
 }

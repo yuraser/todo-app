@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Repositories\Task\AbstractTaskRepository;
+use App\Services\Task\Filter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -95,8 +97,18 @@ class TaskController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function getFiltered(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getFiltered(Request $request): JsonResponse
     {
+        try {
+            $tasks = $this->taskRepository->getByFiltered($request->all(), new Filter($request->all(), Auth::id()));
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+        }
 
+        return response()->json(['success' => true, 'tasks' => $tasks]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Repositories\Task;
 
 use App\Models\Task;
+use App\Services\Filter\QueryFilter;
 use Exception;
 use Illuminate\Support\Collection;
 
@@ -43,11 +44,12 @@ class TaskRepository extends AbstractTaskRepository
 
     /**
      * @param array $filters
+     * @param QueryFilter $filter
      * @return Collection
      */
-    public function getByFiltered(array $filters): Collection
+    public function getByFiltered(array $filters, QueryFilter $filter): Collection
     {
-        // TODO: Implement getByFiltered() method.
+        return Task::filter($filter)->get();
     }
 
     /**
@@ -66,8 +68,10 @@ class TaskRepository extends AbstractTaskRepository
      */
     public function setStatus(int $id, int $statusId)
     {
-        Task::where('id', $id)->update([
-            'status_id' => $statusId
+        $task = Task::findOrFail($id);
+        $task->update([
+            'status_id' => $statusId,
+            'completed_at' => date('Y-m-d H:i:s')
         ]);
     }
 
@@ -79,6 +83,9 @@ class TaskRepository extends AbstractTaskRepository
     public function update(int $id, array $data)
     {
         $task = Task::findOrFail($id);
+        if ($data['status_id']) {
+            $data['completed_at'] = date('Y-m-d H:i:s');
+        }
         $task->update($data);
     }
 }
